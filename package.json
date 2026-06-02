@@ -8,11 +8,15 @@
     "dev:install-check": "node scripts/check-deps.mjs",
     "dev:web": "vite --port=3000 --host=0.0.0.0",
     "dev:api": "tsx watch server/index.ts",
-    "build": "vite build",
+    "build": "npm run build:web",
+    "build:web": "vite build",
     "start": "tsx server/index.ts",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
+  },
+  "engines": {
+    "node": ">=20"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -26,6 +30,7 @@
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
     "react-router-dom": "^7.6.2",
+    "tsx": "^4.21.0",
     "vite": "^6.2.3"
   },
   "devDependencies": {
@@ -36,7 +41,6 @@
     "concurrently": "^9.1.2",
     "esbuild": "^0.25.0",
     "tailwindcss": "^4.1.14",
-    "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.3"
   }
