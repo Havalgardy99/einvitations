@@ -71,8 +71,9 @@ export default function HomePage() {
   };
 
   return (
-    <div dir="rtl" className="admin-root min-h-screen">
-      <div className="admin-noise" aria-hidden />
+    <div dir="rtl" className="marketplace-root min-h-screen relative">
+      <div className="marketplace-blob marketplace-blob-1" aria-hidden />
+      <div className="marketplace-blob marketplace-blob-2" aria-hidden />
       <MarketplaceNavbar />
       <main className="relative z-10 max-w-6xl mx-auto px-4 pt-24 pb-8 sm:pt-28 sm:pb-12 space-y-16 sm:space-y-20">
         <HeroSection />

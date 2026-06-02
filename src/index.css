@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: "Cormorant Garamond", "Noto Naskh Arabic", Georgia, serif;
+  --font-serif: "Playfair Display", "Cormorant Garamond", "Noto Naskh Arabic", Georgia, serif;
   --font-sans: "Noto Sans Arabic", "Segoe UI", Tahoma, sans-serif;
   --color-gold: #d4af37;
   --color-gold-soft: #cbb084;
@@ -10,6 +10,14 @@
   --color-ink: #0c0a09;
   --color-ink-card: #161412;
   --color-cream: #f3efe9;
+  --color-rose: #c2556a;
+  --color-rose-light: #e8a0a8;
+  --color-rose-soft: #f5e6e8;
+  --color-champagne: #b8976a;
+  --color-text: #2d2a26;
+  --color-text-muted: #7a7268;
+  --color-surface: #ffffff;
+  --color-border: #f0ebe6;
 }
 
 /* ——— Base ——— */
@@ -27,7 +35,224 @@ body {
   font-family: var(--font-serif);
 }
 
-/* ——— Admin luxury theme ——— */
+/* ——— Marketplace light theme ——— */
+.marketplace-root {
+  min-height: 100vh;
+  color: var(--color-text);
+  background-color: #ffffff;
+  background-image:
+    radial-gradient(ellipse 90% 60% at 5% -5%, rgba(232, 160, 168, 0.12), transparent),
+    radial-gradient(ellipse 70% 50% at 95% 10%, rgba(184, 151, 106, 0.08), transparent),
+    radial-gradient(ellipse 60% 40% at 50% 100%, rgba(245, 230, 232, 0.35), transparent);
+}
+
+.marketplace-blob {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.marketplace-blob-1 {
+  top: -10%;
+  right: -5%;
+  width: 400px;
+  height: 400px;
+  background: rgba(232, 160, 168, 0.15);
+}
+
+.marketplace-blob-2 {
+  bottom: 20%;
+  left: -8%;
+  width: 350px;
+  height: 350px;
+  background: rgba(245, 230, 232, 0.4);
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 1.75rem;
+  color: var(--color-text);
+  line-height: 1.3;
+}
+
+@media (min-width: 640px) {
+  .section-title {
+    font-size: 2rem;
+  }
+}
+
+.section-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-rose);
+  font-weight: 600;
+}
+
+.market-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(194, 85, 106, 0.25),
+    rgba(184, 151, 106, 0.25),
+    transparent
+  );
+}
+
+.market-panel {
+  position: relative;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
+  border-radius: 1.5rem;
+  box-shadow:
+    0 1px 2px rgba(45, 42, 38, 0.04),
+    0 8px 32px -8px rgba(194, 85, 106, 0.1),
+    0 24px 48px -16px rgba(45, 42, 38, 0.06);
+}
+
+.market-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+  box-shadow: 0 2px 8px rgba(45, 42, 38, 0.04);
+}
+
+.market-card:hover {
+  border-color: rgba(194, 85, 106, 0.25);
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 32px -8px rgba(194, 85, 106, 0.12),
+    0 4px 12px rgba(45, 42, 38, 0.06);
+}
+
+.market-stat {
+  background: linear-gradient(135deg, #fff 0%, var(--color-rose-soft) 100%);
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 12px rgba(194, 85, 106, 0.06);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #e8a0a8 0%, #c2556a 100%);
+  color: #fff;
+  box-shadow: 0 4px 16px -4px rgba(194, 85, 106, 0.45);
+  transition: transform 0.2s, box-shadow 0.2s, filter 0.2s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.05);
+  box-shadow: 0 8px 24px -4px rgba(194, 85, 106, 0.55);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.btn-outline {
+  border: 1.5px solid rgba(194, 85, 106, 0.35);
+  background: rgba(245, 230, 232, 0.4);
+  color: var(--color-rose);
+  transition: all 0.2s;
+}
+
+.btn-outline:hover {
+  background: rgba(245, 230, 232, 0.8);
+  border-color: rgba(194, 85, 106, 0.55);
+}
+
+.market-input {
+  width: 100%;
+  background: #faf8f6;
+  border: 1px solid var(--color-border);
+  border-radius: 0.75rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  color: var(--color-text);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.market-input:focus {
+  outline: none;
+  border-color: rgba(194, 85, 106, 0.45);
+  box-shadow: 0 0 0 3px rgba(194, 85, 106, 0.1);
+  background: #fff;
+}
+
+.market-input::placeholder {
+  color: rgba(122, 114, 104, 0.55);
+}
+
+select.market-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23C2556A' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 1rem center;
+  padding-left: 2.5rem;
+}
+
+.scroll-mt-24 {
+  scroll-margin-top: 6rem;
+}
+
+.icon-box {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  background: var(--color-rose-soft);
+  border: 1px solid rgba(194, 85, 106, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-badge {
+  width: 3rem;
+  height: 3rem;
+  border-radius: 9999px;
+  background: linear-gradient(135deg, var(--color-rose-soft), #fff);
+  border: 2px solid rgba(194, 85, 106, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-rose);
+}
+
+.pricing-highlight {
+  border: 2px solid rgba(194, 85, 106, 0.35);
+  box-shadow: 0 16px 48px -12px rgba(194, 85, 106, 0.2);
+}
+
+.badge-popular {
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-rose);
+  background: var(--color-rose-soft);
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-weight: 600;
+}
+
+/* ——— Admin luxury theme (dark) ——— */
 .admin-root {
   min-height: 100vh;
   color: var(--color-cream);
@@ -146,10 +371,6 @@ select.input-luxury {
   background-repeat: no-repeat;
   background-position: left 1rem center;
   padding-left: 2.5rem;
-}
-
-.scroll-mt-24 {
-  scroll-margin-top: 6rem;
 }
 
 .stat-card {

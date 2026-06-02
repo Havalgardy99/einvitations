@@ -6,11 +6,11 @@ export default function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section id="faq" className="space-y-6 scroll-mt-24">
-      <div className="gold-divider mb-6" />
+    <section id="faq" className="space-y-8 scroll-mt-24">
+      <div className="market-divider mb-6" />
       <div className="text-center space-y-2">
-        <h2 className="font-serif text-2xl sm:text-3xl text-[#D4AF37]">پرسیارە باوەکان</h2>
-        <p className="text-sm text-[#A39081] max-w-lg mx-auto">
+        <h2 className="section-title">پرسیارە باوەکان</h2>
+        <p className="section-subtitle max-w-lg mx-auto">
           وەڵامی پرسیارە ئاساییەکان دەربارەی خزمەتگوزاریەکەمان
         </p>
       </div>
@@ -18,24 +18,24 @@ export default function FaqSection() {
         {marketplaceFaqs.map((faq, i) => {
           const open = openIndex === i;
           return (
-            <article key={faq.question} className="invite-card rounded-xl overflow-hidden">
+            <article key={faq.question} className="market-card rounded-xl overflow-hidden">
               <button
                 type="button"
                 onClick={() => setOpenIndex(open ? null : i)}
                 className="w-full flex items-center justify-between gap-4 p-5 text-right"
               >
-                <span className="font-serif text-[#F3EFE9] text-sm sm:text-base">
+                <span className="font-serif text-[#2D2A26] text-sm sm:text-base">
                   {faq.question}
                 </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-[#D4AF37] shrink-0 transition-transform ${
+                  className={`w-5 h-5 text-[#C2556A] shrink-0 transition-transform ${
                     open ? "rotate-180" : ""
                   }`}
                 />
               </button>
               {open && (
                 <div className="px-5 pb-5">
-                  <p className="text-sm text-[#A39081] leading-relaxed">{faq.answer}</p>
+                  <p className="text-sm text-[#7A7268] leading-relaxed">{faq.answer}</p>
                 </div>
               )}
             </article>

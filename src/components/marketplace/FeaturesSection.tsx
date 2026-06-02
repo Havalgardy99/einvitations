@@ -20,11 +20,11 @@ const iconMap: Record<string, LucideIcon> = {
 
 export default function FeaturesSection() {
   return (
-    <section id="features" className="space-y-6 scroll-mt-24">
-      <div className="gold-divider mb-6" />
+    <section id="features" className="space-y-8 scroll-mt-24">
+      <div className="market-divider mb-6" />
       <div className="text-center space-y-2">
-        <h2 className="font-serif text-2xl sm:text-3xl text-[#D4AF37]">تایبەتمەندیەکان</h2>
-        <p className="text-sm text-[#A39081] max-w-lg mx-auto">
+        <h2 className="section-title">تایبەتمەندیەکان</h2>
+        <p className="section-subtitle max-w-lg mx-auto">
           هەموو ئەوەی پێویستە بۆ بانگهێشتنامەیەکی دیجیتاڵی تەواو
         </p>
       </div>
@@ -34,13 +34,13 @@ export default function FeaturesSection() {
           return (
             <article
               key={feature.title}
-              className="glass-panel rounded-2xl p-6 space-y-3 hover:border-[#D4AF37]/30 transition-colors"
+              className="market-panel p-6 space-y-3 hover:shadow-lg hover:shadow-rose-100/40 transition-shadow"
             >
-              <div className="w-11 h-11 rounded-xl bg-[#D4AF37]/10 border border-[#D4AF37]/20 flex items-center justify-center">
-                <Icon className="w-5 h-5 text-[#D4AF37]" />
+              <div className="icon-box">
+                <Icon className="w-5 h-5 text-[#C2556A]" />
               </div>
-              <h3 className="font-serif text-xl text-[#F3EFE9]">{feature.title}</h3>
-              <p className="text-sm text-[#A39081] leading-relaxed">{feature.description}</p>
+              <h3 className="font-serif text-xl text-[#2D2A26]">{feature.title}</h3>
+              <p className="text-sm text-[#7A7268] leading-relaxed">{feature.description}</p>
             </article>
           );
         })}
