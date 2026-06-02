@@ -1,0 +1,6 @@
+{
+  "name": "Digital Invitation",
+  "description": "An interactive, luxurious digital wedding and event invitation featuring a realistic physics-simulated wax seal on a swinging string.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,59 @@
+import React, { useEffect, useState } from "react";
+
+interface PhoneFrameProps {
+  children: React.ReactNode;
+  outerClass?: string;
+  screenClass?: string;
+  showDeviceChrome?: boolean;
+}
+
+export default function PhoneFrame({
+  children,
+  outerClass = "bg-[#11100F]",
+  screenClass = "bg-[#D4C6C4]",
+  showDeviceChrome = true
+}: PhoneFrameProps) {
+  const [windowSize, setWindowSize] = useState({ width: 390, height: 780 });
+
+  useEffect(() => {
+    const handleResize = () => {
+      const isMobile = window.innerWidth < 640;
+      setWindowSize(
+        isMobile
+          ? { width: window.innerWidth, height: window.innerHeight }
+          : { width: 396, height: 840 }
+      );
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  return (
+    <div
+      className={`min-h-screen w-full ${outerClass} text-[#F3EFE9] flex items-center justify-center font-sans overflow-hidden antialiased relative`}
+    >
+      <div className="relative z-10 w-full h-full flex items-center justify-center p-0 sm:p-4">
+        {showDeviceChrome && (
+          <div className="hidden sm:block relative mx-auto select-none pointer-events-none z-30">
+            <div className="absolute -inset-[14px] rounded-[52px] bg-linear-to-b from-[#3E3C3A] via-[#242321] to-[#151413] border border-[#524E4A]/30 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8)]" />
+            <div className="absolute -inset-[11px] rounded-[49px] border-[3px] border-[#2C2A28] opacity-90" />
+            <div className="absolute -inset-[1px] rounded-[40px] border-[10px] border-black" />
+            <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-7 bg-black rounded-full z-50" />
+            <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 w-32 h-1 bg-black/60 rounded-full z-50" />
+          </div>
+        )}
+        <div
+          style={{
+            width: windowSize.width,
+            height: windowSize.height,
+            maxHeight: "100vh"
+          }}
+          className={`relative overflow-hidden sm:rounded-[38px] shadow-2xl flex flex-col z-20 sm:border sm:border-black/40 ${screenClass}`}
+        >
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+}
