@@ -198,7 +198,7 @@ export const marketplaceFaqs: MarketplaceFaq[] = [
 
 export const marketplaceContact = {
   phone: "+964 750 123 4567",
-  email: "info@haawirabet.com",
-  instagram: "https://instagram.com/haawirabet",
+  email: "info@Hawre.com",
+  instagram: "https://instagram.com/Hawre",
   whatsapp: "https://wa.me/9647501234567"
 };

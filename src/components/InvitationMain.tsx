@@ -233,7 +233,7 @@ export default function InvitationMain({
       <div className={`absolute top-10 left-10 w-48 h-48 rounded-full blur-2xl pointer-events-none ${t.glow1}`} />
       <div className={`absolute bottom-20 right-10 w-48 h-48 rounded-full blur-2xl pointer-events-none ${t.glow2}`} />
 
-      <div className={`relative pt-8 pb-5 px-6 shrink-0 backdrop-blur-md border-b flex flex-col items-center select-none text-center z-10 ${t.header}`}>
+      <div className={`relative pt-[max(1.5rem,env(safe-area-inset-top))] pb-4 sm:pb-5 px-4 sm:px-6 shrink-0 backdrop-blur-md border-b flex flex-col items-center select-none text-center z-10 ${t.header}`}>
         <div className={`text-[9px] tracking-[0.25em] font-mono uppercase mb-1.5 flex items-center justify-center gap-1 font-semibold ${t.headerLabel}`}>
           <Sparkles className={`w-3 h-3 animate-pulse ${t.gold}`} /> بانگهێشتنامەی فەرمی <Sparkles className={`w-3 h-3 animate-pulse ${t.gold}`} />
         </div>
@@ -842,27 +842,30 @@ export default function InvitationMain({
       </div>
 
       {/* Elegant Fixed Bottom Navigation Ribbons/Tabs */}
-      <div className={`shrink-0 border-t py-3.5 px-4 z-20 flex justify-between select-none shadow-[0_-4px_16px_rgba(0,0,0,0.45)] ${t.nav}`}>
+      <div
+        className={`shrink-0 border-t py-2 sm:py-3.5 px-2 sm:px-4 z-20 flex justify-between select-none shadow-[0_-4px_16px_rgba(0,0,0,0.45)] ${t.nav}`}
+        style={{ paddingBottom: "max(0.5rem, env(safe-area-inset-bottom))" }}
+      >
         {[
-          { id: "invite" as const, label: "بانگهێشت", icon: <User className="w-4 h-4" /> },
-          { id: "timeline" as const, label: "بەرنامە", icon: <Calendar className="w-4 h-4" /> },
-          { id: "rsvp" as const, label: "بەشداری", icon: <MessageSquare className="w-4 h-4" /> },
-          { id: "wishes" as const, label: "پیرۆزبایی", icon: <Heart className="w-4 h-4" /> }
+          { id: "invite" as const, label: "بانگهێشت", icon: <User className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+          { id: "timeline" as const, label: "بەرنامە", icon: <Calendar className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+          { id: "rsvp" as const, label: "بەشداری", icon: <MessageSquare className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> },
+          { id: "wishes" as const, label: "پیرۆزبایی", icon: <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" /> }
         ].map((tab) => (
           <button
             key={tab.id}
             id={`nav-tab-${tab.id}`}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex flex-col items-center justify-center gap-1.5 py-1.5 px-2.5 rounded-xl transition-all grow cursor-pointer ${
+            className={`flex flex-col items-center justify-center gap-0.5 sm:gap-1.5 py-1 sm:py-1.5 px-1 sm:px-2.5 rounded-xl transition-all grow min-w-0 cursor-pointer ${
               activeTab === tab.id ? `${t.navActive} font-bold` : t.navInactive
             }`}
           >
-            <div className={`p-1.5 rounded-lg transition-all scale-102 ${
+            <div className={`p-1 sm:p-1.5 rounded-lg transition-all ${
               activeTab === tab.id ? `${t.navIconActive} shadow-xs ring-1` : ""
             }`}>
               {tab.icon}
             </div>
-            <span className="text-[10px] uppercase tracking-wide font-extrabold">
+            <span className="text-[8px] sm:text-[10px] uppercase tracking-wide font-extrabold truncate max-w-full">
               {tab.label}
             </span>
           </button>

@@ -21,7 +21,7 @@ export default function PricingSection({ onSelectPlan }: Props) {
             key={plan.key}
             className={`rounded-2xl p-6 flex flex-col space-y-5 ${
               plan.highlighted
-                ? "market-panel pricing-highlight scale-[1.02]"
+                ? "market-panel pricing-highlight xl:scale-[1.02]"
                 : "market-card"
             }`}
           >

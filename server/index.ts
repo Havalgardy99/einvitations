@@ -19,6 +19,8 @@ import {
 } from "../shared/templates.js";
 import type { CustomTemplateCategory } from "../shared/templateCategories.js";
 import { DEFAULT_THEME_COLORS } from "../shared/templateCategories.js";
+import { DEFAULT_SITE_SETTINGS } from "../shared/siteSettings.js";
+import type { SiteSettings } from "../shared/siteSettings.js";
 import { resolveTemplateMeta } from "../shared/templateResolve.js";
 import { readDb, writeDb } from "./db.js";
 import { generateToken, hashToken, verifyAdmin } from "./auth.js";
@@ -462,6 +464,29 @@ app.patch("/api/admin/orders/:id/status", requireAdmin, (req, res) => {
   db.orders[idx].status = body.status;
   writeDb(db);
   res.json(db.orders[idx]);
+});
+
+// ——— Site settings ———
+app.get("/api/settings", (_req, res) => {
+  const db = readDb();
+  res.json({ ...DEFAULT_SITE_SETTINGS, ...db.siteSettings });
+});
+
+app.get("/api/admin/settings", requireAdmin, (_req, res) => {
+  const db = readDb();
+  res.json({ ...DEFAULT_SITE_SETTINGS, ...db.siteSettings });
+});
+
+app.put("/api/admin/settings", requireAdmin, (req, res) => {
+  const body = req.body as Partial<SiteSettings>;
+  const db = readDb();
+  db.siteSettings = {
+    ...DEFAULT_SITE_SETTINGS,
+    ...db.siteSettings,
+    ...body
+  };
+  writeDb(db);
+  res.json(db.siteSettings);
 });
 
 // ——— Public: invitation by slug ———

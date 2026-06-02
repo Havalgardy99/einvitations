@@ -98,7 +98,7 @@ export default function UnfoldingEnvelope({ config, onComplete }: UnfoldingEnvel
 
       {/* Immersive 3D Space perspective container */}
       <div 
-        className="relative w-full h-[520px] max-w-[340px] flex items-center justify-center z-10"
+        className="relative w-full h-[min(520px,72dvh)] max-w-[min(340px,92vw)] flex items-center justify-center z-10 mx-auto"
         style={{ perspective: "1250px" }}
       >
         
@@ -114,7 +114,7 @@ export default function UnfoldingEnvelope({ config, onComplete }: UnfoldingEnvel
           }
           transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
           style={{ transformStyle: "preserve-3d" }}
-          className="relative w-[310px] h-[215px] bg-[#C1B9AE] rounded-b-3xl shadow-[0_24px_55px_rgba(0,0,0,0.35)] border-t border-[#DFDCD4]/25 cursor-pointer"
+          className="relative w-full max-w-[310px] aspect-[310/215] bg-[#C1B9AE] rounded-b-3xl shadow-[0_24px_55px_rgba(0,0,0,0.35)] border-t border-[#DFDCD4]/25 cursor-pointer"
           onClick={handleOpen}
         >
           
@@ -217,7 +217,7 @@ export default function UnfoldingEnvelope({ config, onComplete }: UnfoldingEnvel
               exit={{ scale: 0, opacity: 0, y: 15 }}
               transition={{ duration: 0.4 }}
               style={{ transformStyle: "preserve-3d" }}
-              className="absolute left-[138px] top-[108px] z-50 flex flex-col items-center select-none"
+              className="absolute left-1/2 top-[50%] -translate-x-1/2 -translate-y-1/2 z-50 flex flex-col items-center select-none"
               onClick={handleOpen}
             >
               {/* Pulsing ring outline under the seal */}

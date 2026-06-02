@@ -46,8 +46,9 @@ import type {
   CustomTemplateCategory,
   TemplateThemeColors
 } from "./templateCategories.js";
+import type { SiteSettings } from "./siteSettings.js";
 
-export type { CustomTemplateCategory, TemplateThemeColors };
+export type { CustomTemplateCategory, TemplateThemeColors, SiteSettings };
 export type { TemplateLayoutType } from "./templateCategories.js";
 
 export interface InvitationTemplate {
@@ -97,6 +98,7 @@ export interface DatabaseSchema {
   invitations: InvitationRecord[];
   orders: TemplateOrder[];
   customTemplateCategories: CustomTemplateCategory[];
+  siteSettings: SiteSettings;
 }
 
 export function createDefaultTemplate(

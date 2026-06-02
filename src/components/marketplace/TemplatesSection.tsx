@@ -37,7 +37,7 @@ export default function TemplatesSection({ templates, onOrder }: Props) {
               <p className="text-sm text-[#7A7268] leading-relaxed line-clamp-3">
                 {preset.description}
               </p>
-              <div className="flex gap-2 pt-2">
+              <div className="flex flex-col sm:flex-row gap-2 pt-2">
                 <button
                   type="button"
                   onClick={() => onOrder(preset.key)}

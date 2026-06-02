@@ -32,23 +32,26 @@ export default function TemplateDemoPage() {
   if (!templateKey) return <Navigate to="/" replace />;
   if (loading) {
     return (
-      <div className="admin-root min-h-screen flex items-center justify-center">
-        <p className="text-[#CBB084] text-sm">کردنەوەی demo...</p>
+      <div className="dashboard-root min-h-dvh flex items-center justify-center">
+        <p className="text-[#6b7280] text-sm">کردنەوەی demo...</p>
       </div>
     );
   }
   if (error || !config) return <Navigate to="/" replace />;
 
   return (
-    <div className="relative min-h-screen">
-      <div className="absolute top-4 right-4 z-[100]">
+    <div className="relative min-h-dvh overflow-hidden">
+      <div
+        className="absolute z-[100] left-4 right-4 sm:left-auto sm:right-4 flex justify-center sm:justify-end pointer-events-none"
+        style={{ top: "max(1rem, env(safe-area-inset-top))" }}
+      >
         <Link
           to="/"
-          className={
+          className={`pointer-events-auto inline-flex items-center px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-[11px] sm:text-xs font-bold transition-colors ${
             layoutType === "cinematic"
-              ? "inline-flex items-center px-4 py-2.5 rounded-full bg-black/50 backdrop-blur-md border border-white/25 text-white text-xs font-bold hover:bg-black/65 transition-colors"
-              : "btn-gold-outline px-4 py-2 rounded-lg text-sm"
-          }
+              ? "bg-black/50 backdrop-blur-md border border-white/25 text-white hover:bg-black/65"
+              : "bg-white/90 backdrop-blur-md border border-[#eef1f4] text-[#1a1d1f] hover:bg-white shadow-sm"
+          }`}
         >
           گەڕانەوە بۆ تێمپلەیتەکان
         </Link>

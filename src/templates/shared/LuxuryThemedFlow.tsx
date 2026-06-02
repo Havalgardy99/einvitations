@@ -73,18 +73,18 @@ function ThemeIntro({
         )}
       </div>
 
-      <div className="pt-12 px-6 flex justify-between items-start z-20">
-        <div className="text-right">
-          <p className="text-[10px] font-mono tracking-[0.2em] font-bold uppercase opacity-80">
+      <div className="pt-[max(2.5rem,env(safe-area-inset-top))] px-4 sm:px-6 flex justify-between items-start z-20 gap-2">
+        <div className="text-right min-w-0">
+          <p className="text-[10px] sm:text-xs font-mono tracking-[0.2em] font-bold uppercase opacity-80">
             بانگهێشتی هاوسەرگیری
           </p>
-          <p className="text-[9px] opacity-70 mt-0.5">
+          <p className="text-[9px] sm:text-[10px] opacity-70 mt-0.5 truncate">
             {config.coupleName1} و {config.coupleName2}
           </p>
         </div>
         <button
           onClick={onOpen}
-          className="px-4 py-1.5 rounded-full text-xs font-semibold border border-black/10 bg-white/25 backdrop-blur-md"
+          className="shrink-0 px-3 sm:px-4 py-1.5 rounded-full text-[10px] sm:text-xs font-semibold border border-black/10 bg-white/25 backdrop-blur-md"
         >
           تێپەڕاندن
         </button>
@@ -94,25 +94,25 @@ function ThemeIntro({
         initial={{ opacity: 0, y: -30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-        className="px-8 text-center z-10"
+        className="px-4 sm:px-8 text-center z-10"
       >
         <p className="text-[10px] font-mono uppercase tracking-widest opacity-80 mb-2">
           {preset.subtitle}
         </p>
-        <h2 className="font-serif text-3xl font-extralight tracking-widest leading-tight">
+        <h2 className="font-serif text-2xl sm:text-3xl font-extralight tracking-widest leading-tight">
           {config.coupleName1}
           <br />
           <span className="opacity-70">&amp;</span> {config.coupleName2}
         </h2>
         <div className="flex items-center justify-center gap-1 mt-3 opacity-80">
-          <Sparkle className="w-3 h-3" />
-          <span className="text-[10px] tracking-widest font-bold">{config.locationShort}</span>
-          <Sparkle className="w-3 h-3" />
+          <Sparkle className="w-3 h-3 shrink-0" />
+          <span className="text-[10px] tracking-widest font-bold truncate max-w-[220px]">{config.locationShort}</span>
+          <Sparkle className="w-3 h-3 shrink-0" />
         </div>
       </motion.div>
 
-      <div className="pb-16 px-8 z-20">
-        <div className="bg-white/15 border border-white/25 backdrop-blur-md py-4 px-4 rounded-2xl flex items-center gap-3">
+      <div className="pb-[max(3.5rem,env(safe-area-inset-bottom))] px-4 sm:px-8 z-20">
+        <div className="bg-white/15 border border-white/25 backdrop-blur-md py-3 sm:py-4 px-3 sm:px-4 rounded-2xl flex items-center gap-3">
           {themeId === "night" ? (
             <Moon className="w-5 h-5 shrink-0 animate-pulse" />
           ) : themeId === "garden" ? (

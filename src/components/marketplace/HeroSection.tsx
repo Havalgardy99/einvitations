@@ -1,8 +1,10 @@
 import { ChevronDown } from "lucide-react";
 import { brand } from "../../../shared/brand";
+import { useSiteSettings } from "../../context/SiteSettingsContext";
 import BrandLogo from "./BrandLogo";
 
 export default function HeroSection() {
+  const settings = useSiteSettings();
   const scrollToTemplates = () => {
     document.querySelector("#templates")?.scrollIntoView({ behavior: "smooth" });
   };
@@ -15,16 +17,18 @@ export default function HeroSection() {
         <BrandLogo size="lg" />
 
         <span className="section-label">
-          {brand.taglineEn}
+          {settings.taglineEn || brand.taglineEn}
         </span>
 
         <h1 className="font-serif text-3xl sm:text-5xl text-[#2D2A26] leading-tight max-w-2xl">
-          {brand.tagline}
+          {settings.tagline || brand.tagline}
         </h1>
 
         <p className="max-w-xl mx-auto text-[#7A7268] text-sm sm:text-base leading-relaxed">
           بە شێوازی ئۆنڵاین شۆپ تێمپلەیت هەڵبژێرە، پێش ئۆردەرکردن live demo ببینە،
-          دواتر فۆڕمی ئۆردەر پڕبکەرەوە — تیمی <span className="text-[#C2556A] font-medium">{brand.nameEn}</span> بانگهێشتنامەی تایبەتیت ئامادە دەکات.
+          دواتر فۆڕمی ئۆردەر پڕبکەرەوە — تیمی{" "}
+          <span className="text-[#C2556A] font-medium">{settings.nameEn || brand.nameEn}</span>{" "}
+          بانگهێشتنامەی تایبەتیت ئامادە دەکات.
         </p>
 
         <div className="flex flex-wrap justify-center gap-3 pt-2">

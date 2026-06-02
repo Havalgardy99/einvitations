@@ -6,6 +6,7 @@ import {
   type DatabaseSchema,
   type InvitationRecord
 } from "../shared/invitation.js";
+import { DEFAULT_SITE_SETTINGS } from "../shared/siteSettings.js";
 
 const DATA_DIR = path.resolve(process.cwd(), "data");
 const DB_PATH = path.join(DATA_DIR, "db.json");
@@ -45,7 +46,8 @@ function seedDatabase(): DatabaseSchema {
     adminTokenHash: null,
     invitations: [invitation],
     orders: [],
-    customTemplateCategories: []
+    customTemplateCategories: [],
+    siteSettings: { ...DEFAULT_SITE_SETTINGS }
   };
 }
 
@@ -56,7 +58,10 @@ function normalizeDb(raw: Partial<DatabaseSchema>): DatabaseSchema {
     orders: Array.isArray(raw.orders) ? raw.orders : [],
     customTemplateCategories: Array.isArray(raw.customTemplateCategories)
       ? raw.customTemplateCategories
-      : []
+      : [],
+    siteSettings: raw.siteSettings
+      ? { ...DEFAULT_SITE_SETTINGS, ...raw.siteSettings }
+      : { ...DEFAULT_SITE_SETTINGS }
   };
 }
 

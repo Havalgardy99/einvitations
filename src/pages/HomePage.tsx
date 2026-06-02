@@ -71,7 +71,7 @@ export default function HomePage() {
   };
 
   return (
-    <div dir="rtl" className="marketplace-root min-h-screen relative">
+    <div dir="rtl" className="marketplace-root min-h-screen relative overflow-x-hidden">
       <div className="marketplace-blob marketplace-blob-1" aria-hidden />
       <div className="marketplace-blob marketplace-blob-2" aria-hidden />
       <MarketplaceNavbar />

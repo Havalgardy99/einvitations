@@ -7,6 +7,7 @@ import type {
   TemplateOrder
 } from "../../shared/invitation";
 import type { TemplateLayoutType } from "../../shared/templateCategories";
+import type { SiteSettings } from "../../shared/siteSettings";
 import { apiUrl } from "./base";
 
 function authHeaders(): HeadersInit {
@@ -233,6 +234,22 @@ export const api = {
     return request<{ ok: boolean }>(`/api/admin/template-categories/${id}`, {
       method: "DELETE",
       headers: authHeaders()
+    });
+  },
+
+  getSiteSettings() {
+    return request<SiteSettings>("/api/settings");
+  },
+
+  getAdminSettings() {
+    return request<SiteSettings>("/api/admin/settings", { headers: authHeaders() });
+  },
+
+  updateSiteSettings(data: Partial<SiteSettings>) {
+    return request<SiteSettings>("/api/admin/settings", {
+      method: "PUT",
+      headers: authHeaders(),
+      body: JSON.stringify(data)
     });
   }
 };

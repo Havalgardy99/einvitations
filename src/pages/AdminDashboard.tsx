@@ -31,6 +31,11 @@ import { mediaUrl } from "../api/base";
 import { toAbsoluteUrl } from "../lib/urls";
 import ImageUpload from "../components/admin/ImageUpload";
 import LinksPanel from "../components/admin/LinksPanel";
+import AdminHomeView from "../components/admin/AdminHomeView";
+import { DashField } from "../components/admin/adminUi";
+import type { AdminTab } from "../components/admin/AdminSidebar";
+import type { SiteSettings } from "../../shared/siteSettings";
+import { DEFAULT_SITE_SETTINGS } from "../../shared/siteSettings";
 import {
   DEFAULT_THEME_COLORS,
   defaultCategoryForm,
@@ -77,18 +82,31 @@ export default function AdminDashboard() {
   const [categories, setCategories] = useState<CustomTemplateCategory[]>([]);
   const [categoryForm, setCategoryForm] = useState(defaultCategoryForm());
   const [savingCategory, setSavingCategory] = useState(false);
+  const [adminTab, setAdminTab] = useState<AdminTab>("overview");
+  const [siteSettings, setSiteSettings] = useState<SiteSettings>(DEFAULT_SITE_SETTINGS);
+
+  const tabTitles: Record<AdminTab, string> = {
+    overview: "Overview",
+    create: "ئەکاونتی نوێ",
+    categories: "کەتەگۆری تێمپلەیت",
+    accounts: "ئەکاونتەکان",
+    orders: "ئۆردەرەکان",
+    settings: "ڕێکخستن"
+  };
 
   const loadList = useCallback(async () => {
-    const [invitations, ordersData, cards, cats] = await Promise.all([
+    const [invitations, ordersData, cards, cats, settings] = await Promise.all([
       api.listInvitations(),
       api.listOrders(),
       api.listTemplateCards(),
-      api.listTemplateCategories()
+      api.listTemplateCategories(),
+      api.getAdminSettings().catch(() => DEFAULT_SITE_SETTINGS)
     ]);
     setList(invitations);
     setOrders(ordersData);
     setTemplateCards(cards);
     setCategories(cats);
+    setSiteSettings(settings);
   }, []);
 
   useEffect(() => {
@@ -273,12 +291,10 @@ export default function AdminDashboard() {
             transition={{ repeat: Infinity, duration: 1.8 }}
             className="flex flex-col items-center gap-4"
           >
-            <div className="w-14 h-14 rounded-full border-2 border-[#D4AF37]/40 flex items-center justify-center">
-              <Sparkles className="w-6 h-6 text-[#D4AF37] animate-spin-slow" />
+            <div className="w-14 h-14 rounded-full border-2 border-[#22c55e]/30 flex items-center justify-center bg-white">
+              <Sparkles className="w-6 h-6 text-[#22c55e] animate-spin-slow" />
             </div>
-            <span className="font-serif text-lg tracking-[0.2em] text-[#CBB084]">
-              چاوەڕوان بە...
-            </span>
+            <span className="text-lg text-[#6b7280]">چاوەڕوان بە...</span>
           </motion.div>
         </div>
       </AdminShell>
@@ -289,35 +305,27 @@ export default function AdminDashboard() {
     return (
       <AdminShell>
         <div className="min-h-screen flex items-center justify-center p-6">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full bg-[#6D1520]/20 blur-[120px] pointer-events-none animate-pulse-glow" />
-          <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] rounded-full bg-[#D4AF37]/8 blur-[100px] pointer-events-none" />
-
           <motion.form
             noValidate
             initial={{ opacity: 0, y: 24, scale: 0.98 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             onSubmit={handleLogin}
-            className="glass-panel relative w-full max-w-[420px] rounded-2xl p-8 sm:p-10 space-y-6"
+            className="dash-card relative w-full max-w-[420px] p-8 sm:p-10 space-y-6"
           >
             <div className="text-center space-y-4">
-              <div className="mx-auto w-16 h-16 rounded-full bg-gradient-to-br from-[#6D1520] to-[#4D0A11] flex items-center justify-center border border-[#D4AF37]/30 shadow-lg shadow-[#6D1520]/30">
-                <Heart className="w-7 h-7 text-[#D4AF37] fill-[#D4AF37]/20" />
+              <div className="mx-auto w-16 h-16 rounded-2xl bg-[#22c55e] flex items-center justify-center shadow-lg shadow-[#22c55e]/30">
+                <Heart className="w-7 h-7 text-white fill-white/20" />
               </div>
               <div>
-                <h1 className="font-serif text-3xl font-light tracking-wide text-[#F3EFE9]">
-                  داشبۆردی بەڕێوەبەر
-                </h1>
-                <p className="text-sm text-[#A39081] mt-2">
-                  بەخێربێیتەوە — بانگهێشتنامەی دیجیتاڵی
-                </p>
+                <h1 className="font-serif text-3xl font-light text-[#1a1d1f]">Hawre</h1>
+                <p className="text-sm text-[#6b7280] mt-2">داشبۆردی بەڕێوەبەر</p>
               </div>
-              <div className="gold-divider w-24 mx-auto" />
             </div>
 
             <div className="space-y-4">
-              <Field label="ناوی بەکارهێنەر" value={username} onChange={setUsername} />
-              <Field
+              <DashField label="ناوی بەکارهێنەر" value={username} onChange={setUsername} />
+              <DashField
                 label="وشەی نهێنی"
                 value={password}
                 onChange={setPassword}
@@ -328,7 +336,7 @@ export default function AdminDashboard() {
                 <motion.p
                   initial={{ opacity: 0, y: -4 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="text-rose-300/90 text-xs text-center leading-relaxed bg-rose-950/40 border border-rose-800/30 rounded-xl px-3 py-2.5"
+                  className="text-rose-600 text-xs text-center leading-relaxed bg-rose-50 border border-rose-200 rounded-xl px-3 py-2.5"
                 >
                   {loginError}
                 </motion.p>
@@ -337,7 +345,7 @@ export default function AdminDashboard() {
 
             <button
               type="submit"
-              className="btn-wine w-full py-3.5 rounded-xl text-sm font-bold tracking-wider text-white"
+              className="btn-dash-primary w-full py-3.5 rounded-xl text-sm font-bold"
             >
               چوونەژوورەوە
             </button>
@@ -345,7 +353,7 @@ export default function AdminDashboard() {
             <button
               type="button"
               onClick={() => setShowForgotHint((v) => !v)}
-              className="w-full text-xs text-[#A39081] hover:text-[#D4AF37] transition-colors"
+              className="w-full text-xs text-[#6b7280] hover:text-[#22c55e] transition-colors"
             >
               وشەی نهێنیم بیرچووە؟
             </button>
@@ -353,11 +361,11 @@ export default function AdminDashboard() {
               <motion.p
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
-                className="text-xs text-[#A39081] text-center leading-relaxed glass-panel rounded-xl p-4 !shadow-none"
+                className="text-xs text-[#6b7280] text-center leading-relaxed dash-card rounded-xl p-4 !shadow-none"
               >
-                لە <code className="text-[#D4AF37]">.env.local</code> بەهای{" "}
-                <code className="text-[#D4AF37]">ADMIN_USERNAME</code> و{" "}
-                <code className="text-[#D4AF37]">ADMIN_PASSWORD</code> بگۆڕە.
+                لە <code className="text-[#22c55e]">.env.local</code> بەهای{" "}
+                <code className="text-[#22c55e]">ADMIN_USERNAME</code> و{" "}
+                <code className="text-[#22c55e]">ADMIN_PASSWORD</code> بگۆڕە.
               </motion.p>
             )}
           </motion.form>
@@ -369,24 +377,24 @@ export default function AdminDashboard() {
   if (view === "edit" && editing && editingLinks) {
     return (
       <AdminShell>
-        <header className="sticky top-0 z-50 border-b border-[#D4AF37]/10 bg-[#0c0a09]/85 backdrop-blur-xl px-4 sm:px-6 py-4 flex items-center justify-between gap-4">
+        <header className="sticky top-0 z-50 border-b border-[#eef1f4] bg-white/90 backdrop-blur-xl px-3 sm:px-6 py-3 sm:py-4 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3 sm:gap-4">
           <button
             onClick={() => {
               setView("list");
               setEditing(null);
               setEditingLinks(null);
             }}
-            className="btn-gold-outline flex items-center gap-2 px-4 py-2 rounded-xl text-sm"
+            className="btn-dash-outline self-start flex items-center gap-2 px-4 py-2 rounded-xl text-sm"
           >
             <ArrowRight className="w-4 h-4 rotate-180" /> گەڕانەوە
           </button>
-          <h1 className="font-serif text-xl truncate text-[#F3EFE9]">
+          <h1 className="font-serif text-lg sm:text-xl truncate text-[#1a1d1f] text-center sm:text-right flex-1">
             {editing.accountName}
           </h1>
           <button
             onClick={handleSave}
             disabled={saving}
-            className="btn-wine flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50 text-white"
+            className="btn-dash-primary self-stretch sm:self-auto flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
             {saving ? "پاشەکەوت..." : "پاشەکەوت"}
@@ -408,7 +416,7 @@ export default function AdminDashboard() {
                 onChange={(e) =>
                   updateField("templateKey", e.target.value)
                 }
-                className="input-luxury"
+                className="dash-input"
               >
                 {templateCards.map((preset) => (
                   <option key={preset.key} value={preset.key}>
@@ -425,7 +433,7 @@ export default function AdminDashboard() {
                 <input
                   type="file"
                   accept="video/*"
-                  className="input-luxury"
+                  className="dash-input"
                   onChange={(e) => void handleVideoUploadForInvitation(e.target.files?.[0] ?? null)}
                 />
                 <div className="rounded-lg border border-[#D4AF37]/20 bg-[#0c0a09]/60 px-3 py-2 text-xs text-[#CBB084]" dir="ltr">
@@ -516,415 +524,46 @@ export default function AdminDashboard() {
 
   return (
     <AdminShell>
-      <main className="max-w-[1400px] mx-auto p-3 sm:p-5 lg:p-7">
-        <div className="grid grid-cols-1 lg:grid-cols-[250px,1fr] gap-5 lg:gap-6">
-          <aside className="glass-panel rounded-3xl p-5 h-fit lg:sticky lg:top-5">
-            <div className="flex items-center gap-3 pb-4 border-b border-[#D4AF37]/15">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#8a1f2e] to-[#4D0A11] border border-[#D4AF37]/30 flex items-center justify-center">
-                <Sparkles className="w-5 h-5 text-[#D4AF37]" />
-              </div>
-              <div>
-                <p className="text-[#F3EFE9] font-semibold">Invitation Admin</p>
-                <p className="text-[11px] text-[#A39081]">Premium Dashboard</p>
-              </div>
-            </div>
-            <div className="pt-4 space-y-2">
-              <NavItem icon={<LayoutGrid className="w-4 h-4" />} label="Overview" active />
-              <NavItem icon={<Plus className="w-4 h-4" />} label="Create Account" />
-              <NavItem icon={<Layers3 className="w-4 h-4" />} label="Template Categories" />
-              <NavItem icon={<ShoppingBag className="w-4 h-4" />} label="Orders" />
-              <NavItem icon={<SlidersHorizontal className="w-4 h-4" />} label="Settings" />
-            </div>
-            <button
-              onClick={handleLogout}
-              className="btn-gold-outline w-full mt-5 flex items-center justify-center gap-2 text-sm px-4 py-2.5 rounded-xl"
-            >
-              <LogOut className="w-4 h-4" /> دەرچوون
-            </button>
-          </aside>
-
-          <div className="space-y-6">
-            <section className="glass-panel rounded-3xl p-4 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-              <div>
-                <h1 className="font-serif text-2xl sm:text-3xl text-[#F3EFE9]">
-                  داشبۆردی بەڕێوەبەر
-                </h1>
-                <p className="text-sm text-[#A39081] mt-1">
-                  بەڕێوەبردنی بانگهێشتنامەکانی هاوسەرگیری بە شێوەیەکی ڕێکخراو
-                </p>
-              </div>
-              <div className="text-xs text-[#CBB084] bg-[#0f0d0c]/70 border border-[#D4AF37]/15 rounded-xl px-4 py-2">
-                {new Date().toLocaleDateString("ku")}
-              </div>
-            </section>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-              <StatCard icon={<LayoutGrid className="w-5 h-5" />} label="ئەکاونت" value={list.length} />
-              <StatCard icon={<Users className="w-5 h-5" />} label="RSVP" value={totalRsvps} />
-              <StatCard icon={<Mail className="w-5 h-5" />} label="پیرۆزبایی" value={totalWishes} />
-              <StatCard icon={<Plus className="w-5 h-5" />} label="ئۆردەری نوێ" value={totalNewOrders} />
-            </div>
-
-            <motion.section
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="glass-panel rounded-3xl p-6 sm:p-8"
-            >
-          <h2 className="font-serif text-xl mb-1 flex items-center gap-2 text-[#F3EFE9]">
-            <Plus className="w-5 h-5 text-[#D4AF37]" />
-            ئەکاونتی نوێ
-          </h2>
-          <p className="text-xs text-[#A39081] mb-6">
-            لینکی تایبەت خۆکار درووست دەبێت
-          </p>
-          <form onSubmit={handleCreate} className="grid sm:grid-cols-3 gap-4">
-            <select
-              value={createForm.templateKey}
-              onChange={(e) =>
-                setCreateForm({
-                  ...createForm,
-                  templateKey: e.target.value
-                })
-              }
-              className="input-luxury sm:col-span-3"
-            >
-              {templateCards.map((preset) => (
-                <option key={preset.key} value={preset.key}>
-                  {preset.name} — {preset.subtitle}
-                </option>
-              ))}
-            </select>
-            <input
-              required
-              placeholder="ناوی ئەکاونت — هەور"
-              value={createForm.accountName}
-              onChange={(e) =>
-                setCreateForm({ ...createForm, accountName: e.target.value })
-              }
-              className="input-luxury"
-            />
-            <input
-              placeholder="ناوی یەکەم"
-              value={createForm.coupleName1}
-              onChange={(e) =>
-                setCreateForm({ ...createForm, coupleName1: e.target.value })
-              }
-              className="input-luxury"
-            />
-            <input
-              placeholder="ناوی دووەم"
-              value={createForm.coupleName2}
-              onChange={(e) =>
-                setCreateForm({ ...createForm, coupleName2: e.target.value })
-              }
-              className="input-luxury"
-            />
-            <button
-              type="submit"
-              className="btn-wine sm:col-span-3 py-3.5 rounded-xl font-bold text-sm tracking-wider text-white"
-            >
-              درووستکردن و کردنەوەی دەستکاری
-            </button>
-          </form>
-            </motion.section>
-
-            <section className="glass-panel rounded-3xl p-6 sm:p-8 space-y-5">
-          <h2 className="font-serif text-xl text-[#F3EFE9]">درووستکردنی کەتەگۆری تێمپلەیتی تایبەت</h2>
-          <form onSubmit={handleCreateCategory} className="grid sm:grid-cols-2 gap-4">
-            <input className="input-luxury" placeholder="ناوی کەتەگۆری" value={categoryForm.name} onChange={(e) => setCategoryForm((p) => ({ ...p, name: e.target.value }))} required />
-            <input className="input-luxury" placeholder="key (unique)" value={categoryForm.key} onChange={(e) => setCategoryForm((p) => ({ ...p, key: e.target.value }))} dir="ltr" required />
-            <input className="input-luxury sm:col-span-2" placeholder="subtitle" value={categoryForm.subtitle} onChange={(e) => setCategoryForm((p) => ({ ...p, subtitle: e.target.value }))} />
-            <textarea className="input-luxury sm:col-span-2 min-h-[80px]" placeholder="description" value={categoryForm.description} onChange={(e) => setCategoryForm((p) => ({ ...p, description: e.target.value }))} />
-            <Field label="Preview image URL" value={categoryForm.previewImageUrl} onChange={(v) => setCategoryForm((p) => ({ ...p, previewImageUrl: v }))} dir="ltr" />
-            <div className="space-y-1.5">
-              <label className="text-xs font-medium tracking-wide text-[#CBB084] block text-right">Layout</label>
-              <select
-                className="input-luxury"
-                value={categoryForm.layoutType}
-                onChange={(e) => setCategoryForm((p) => ({ ...p, layoutType: e.target.value as TemplateLayoutType }))}
-              >
-                <option value="luxury">Luxury</option>
-                <option value="cinematic">Cinematic (video intro)</option>
-              </select>
-            </div>
-            <div className="sm:col-span-2 grid grid-cols-2 sm:grid-cols-3 gap-3">
-              <ColorField label="Shell" value={categoryForm.theme.shell} onChange={(v) => setCategoryTheme("shell", v)} />
-              <ColorField label="Accent" value={categoryForm.theme.accent} onChange={(v) => setCategoryTheme("accent", v)} />
-              <ColorField label="Wine" value={categoryForm.theme.wine} onChange={(v) => setCategoryTheme("wine", v)} />
-              <ColorField label="Card BG" value={categoryForm.theme.cardBg} onChange={(v) => setCategoryTheme("cardBg", v)} />
-              <ColorField label="Text shell" value={categoryForm.theme.textOnShell} onChange={(v) => setCategoryTheme("textOnShell", v)} />
-              <ColorField label="Text card" value={categoryForm.theme.textOnCard} onChange={(v) => setCategoryTheme("textOnCard", v)} />
-            </div>
-            <div className="sm:col-span-2 space-y-2">
-              <label className="text-xs font-medium tracking-wide text-[#CBB084] block text-right">Upload intro video (file only)</label>
-              <input
-                type="file"
-                accept="video/*"
-                className="input-luxury"
-                onChange={(e) => void handleVideoUploadForCategory(e.target.files?.[0] ?? null)}
-              />
-              <div className="rounded-lg border border-[#D4AF37]/20 bg-[#0c0a09]/60 px-3 py-2 text-xs text-[#CBB084]" dir="ltr">
-                {categoryForm.introVideoUrl || "No video uploaded yet"}
-              </div>
-            </div>
-            <button type="submit" className="btn-wine sm:col-span-2 py-3 rounded-xl text-white font-bold" disabled={savingCategory}>
-              {savingCategory ? "پاشەکەوت..." : "درووستکردنی کەتەگۆری"}
-            </button>
-          </form>
-          <div className="grid gap-2">
-            {categories.map((cat) => (
-              <div key={cat.id} className="rounded-xl border border-[#D4AF37]/20 px-4 py-3 flex items-center justify-between">
-                <div>
-                  <p className="text-[#F3EFE9] text-sm">{cat.name} <span className="text-xs text-[#A39081]">({cat.key})</span></p>
-                  <p className="text-xs text-[#CBB084]">{cat.layoutType} {cat.introVideoUrl ? "• video" : ""}</p>
-                </div>
-                <button
-                  onClick={async () => {
-                    await api.deleteTemplateCategory(cat.id);
-                    await loadList();
-                  }}
-                  className="p-2 rounded-lg border border-rose-800/40 text-rose-300 hover:bg-rose-950/40"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-            </section>
-
-            <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-serif text-lg text-[#D4AF37]">
-              ئەکاونتەکان
-            </h2>
-            <span className="text-xs font-mono text-[#A39081] tracking-wider">
-              {list.length} تۆمار
-            </span>
-          </div>
-
-          {list.length === 0 ? (
-            <div className="glass-panel rounded-2xl p-12 text-center">
-              <Heart className="w-10 h-10 text-[#D4AF37]/40 mx-auto mb-4" />
-              <p className="text-[#A39081]">هێشتا ئەکاونت نییە — یەکەم بانگهێشت درووست بکە</p>
-            </div>
-          ) : (
-            <div className="grid gap-4">
-              <AnimatePresence mode="popLayout">
-                {list.map((inv, idx) => (
-                  <motion.article
-                    key={inv.id}
-                    layout
-                    initial={{ opacity: 0, y: 16 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.98 }}
-                    transition={{ delay: idx * 0.04 }}
-                    className="invite-card flex flex-col sm:flex-row gap-0 sm:gap-5"
-                  >
-                    <div className="sm:w-36 h-32 sm:h-auto shrink-0 relative overflow-hidden">
-                      <img
-                        src={mediaUrl(inv.coverImageUrl)}
-                        alt=""
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t sm:bg-gradient-to-r from-[#161412] via-transparent to-transparent" />
-                    </div>
-                    <div className="flex-1 p-5 flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
-                      <div className="space-y-1.5">
-                        <h3 className="font-serif text-xl text-[#F3EFE9]">
-                          {inv.coupleName1}{" "}
-                          <span className="text-[#D4AF37]/80">&</span>{" "}
-                          {inv.coupleName2}
-                        </h3>
-                        <p className="text-sm text-[#A39081]">{inv.accountName}</p>
-                        <p
-                          className="text-xs font-mono text-[#D4AF37]/70"
-                          dir="ltr"
-                        >
-                          /i/{inv.slug}
-                        </p>
-                        <div className="flex flex-wrap gap-2 pt-2">
-                          <Badge>{inv.rsvpCount} RSVP</Badge>
-                          <Badge>{inv.guestbookCount} پیرۆزبایی</Badge>
-                          {!inv.isActive && (
-                            <Badge variant="danger">ناچالاک</Badge>
-                          )}
-                        </div>
-                      </div>
-                      <div className="flex flex-wrap gap-2 shrink-0">
-                        <button
-                          onClick={() => copyLink(inv.id, inv.links.main)}
-                          title="بانگهێشت"
-                          className="btn-gold-outline flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold"
-                        >
-                          {copiedId === inv.id ? (
-                            <Check className="w-3.5 h-3.5" />
-                          ) : (
-                            <Copy className="w-3.5 h-3.5" />
-                          )}
-                          بانگهێشت
-                        </button>
-                        <button
-                          onClick={() =>
-                            copyLink(`${inv.id}-guest`, inv.links.guest)
-                          }
-                          title="بەشداری + پیرۆزبایی"
-                          className="btn-wine flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white"
-                        >
-                          {copiedId === `${inv.id}-guest` ? (
-                            <Check className="w-3.5 h-3.5" />
-                          ) : (
-                            <Heart className="w-3.5 h-3.5" />
-                          )}
-                          میوان
-                        </button>
-                        <button
-                          onClick={() => openEdit(inv.id)}
-                          className="btn-wine flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-bold text-white"
-                        >
-                          <Pencil className="w-3.5 h-3.5" /> دەستکاری
-                        </button>
-                        <button
-                          onClick={() => handleDelete(inv.id)}
-                          className="p-2 rounded-xl border border-rose-800/40 text-rose-300 hover:bg-rose-950/40 transition-colors"
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  </motion.article>
-                ))}
-              </AnimatePresence>
-            </div>
-          )}
-            </section>
-
-            <section className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="font-serif text-lg text-[#D4AF37]">ئۆردەرەکان</h2>
-            <span className="text-xs font-mono text-[#A39081] tracking-wider">
-              {orders.length} ئۆردەر
-            </span>
-          </div>
-          {orders.length === 0 ? (
-            <div className="glass-panel rounded-2xl p-6 text-sm text-[#A39081]">
-              هێشتا هیچ ئۆردەرێک نییە.
-            </div>
-          ) : (
-            <div className="grid gap-3">
-              {orders.map((order) => (
-                <div
-                  key={order.id}
-                  className="glass-panel rounded-2xl p-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                >
-                  <div className="space-y-1">
-                    <p className="text-[#F3EFE9] font-semibold">{order.customerName}</p>
-                    <p className="text-xs text-[#A39081]">{order.phone}</p>
-                    <p className="text-xs text-[#D4AF37]">{order.templateName}</p>
-                    {order.notes && (
-                      <p className="text-xs text-[#CBB084] line-clamp-2">{order.notes}</p>
-                    )}
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <select
-                      value={order.status}
-                      onChange={async (e) => {
-                        await api.updateOrderStatus(
-                          order.id,
-                          e.target.value as TemplateOrder["status"]
-                        );
-                        await loadList();
-                      }}
-                      className="input-luxury text-xs min-w-[140px]"
-                    >
-                      <option value="new">نوێ</option>
-                      <option value="confirmed">پەسەندکراو</option>
-                      <option value="done">تەواوبوو</option>
-                    </select>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-            </section>
-          </div>
-        </div>
-      </main>
+      <AdminHomeView
+        adminTab={adminTab}
+        setAdminTab={setAdminTab}
+        tabTitles={tabTitles}
+        siteSettings={siteSettings}
+        setSiteSettings={setSiteSettings}
+        onLogout={handleLogout}
+        list={list}
+        orders={orders}
+        categories={categories}
+        templateCards={templateCards}
+        totalRsvps={totalRsvps}
+        totalWishes={totalWishes}
+        totalNewOrders={totalNewOrders}
+        createForm={createForm}
+        setCreateForm={setCreateForm}
+        categoryForm={categoryForm}
+        setCategoryForm={setCategoryForm}
+        savingCategory={savingCategory}
+        copiedId={copiedId}
+        onCreate={handleCreate}
+        onCreateCategory={handleCreateCategory}
+        onCategoryTheme={(key, value) =>
+          setCategoryTheme(key as keyof typeof DEFAULT_THEME_COLORS, value)
+        }
+        onVideoUploadCategory={handleVideoUploadForCategory}
+        onOpenEdit={openEdit}
+        onDelete={handleDelete}
+        onCopyLink={copyLink}
+        loadList={loadList}
+      />
     </AdminShell>
   );
 }
 
 function AdminShell({ children }: { children: React.ReactNode }) {
   return (
-    <div dir="rtl" className="admin-root relative min-h-screen">
-      <div className="admin-noise" aria-hidden />
+    <div dir="rtl" className="dashboard-root relative min-h-screen">
       <div className="relative z-10">{children}</div>
     </div>
-  );
-}
-
-function StatCard({
-  icon,
-  label,
-  value
-}: {
-  icon: React.ReactNode;
-  label: string;
-  value: number;
-}) {
-  return (
-    <div className="stat-card flex items-center gap-4">
-      <div className="w-11 h-11 rounded-xl bg-[#6D1520]/30 border border-[#D4AF37]/20 flex items-center justify-center text-[#D4AF37]">
-        {icon}
-      </div>
-      <div>
-        <p className="text-2xl font-serif text-[#F3EFE9]">{value}</p>
-        <p className="text-xs text-[#A39081] tracking-wide">{label}</p>
-      </div>
-    </div>
-  );
-}
-
-function NavItem({
-  icon,
-  label,
-  active = false
-}: {
-  icon: React.ReactNode;
-  label: string;
-  active?: boolean;
-}) {
-  return (
-    <button
-      type="button"
-      className={`w-full flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm transition ${
-        active
-          ? "bg-[#D4AF37]/12 border border-[#D4AF37]/35 text-[#F3EFE9]"
-          : "border border-transparent text-[#A39081] hover:text-[#F3EFE9] hover:border-[#D4AF37]/20 hover:bg-[#1a1716]/70"
-      }`}
-    >
-      {icon}
-      <span>{label}</span>
-    </button>
-  );
-}
-
-function Badge({
-  children,
-  variant = "default"
-}: {
-  children: React.ReactNode;
-  variant?: "default" | "danger";
-}) {
-  return (
-    <span
-      className={`text-[10px] font-mono px-2.5 py-1 rounded-full border ${
-        variant === "danger"
-          ? "border-rose-700/50 text-rose-300 bg-rose-950/30"
-          : "border-[#D4AF37]/25 text-[#CBB084] bg-[#D4AF37]/8"
-      }`}
-    >
-      {children}
-    </span>
   );
 }
 
@@ -936,12 +575,12 @@ function FormSection({
   children: React.ReactNode;
 }) {
   return (
-    <section className="glass-panel rounded-2xl p-5 sm:p-6 space-y-4">
-      <h2 className="font-serif text-lg text-[#D4AF37] flex items-center gap-2">
-        <span className="w-1 h-5 rounded-full bg-[#D4AF37]/60" />
+    <section className="dash-card p-5 sm:p-6 space-y-4">
+      <h2 className="font-serif text-lg text-[#1a1d1f] flex items-center gap-2">
+        <span className="w-1 h-5 rounded-full bg-[#22c55e]" />
         {title}
       </h2>
-      <div className="gold-divider" />
+      <div className="h-px bg-[#eef1f4]" />
       <div className="space-y-4 pt-1">{children}</div>
     </section>
   );
@@ -962,21 +601,7 @@ function Field({
   type?: string;
   autoComplete?: string;
 }) {
-  return (
-    <div className="space-y-1.5">
-      <label className="text-xs font-medium tracking-wide text-[#CBB084] block text-right">
-        {label}
-      </label>
-      <input
-        type={type}
-        autoComplete={autoComplete}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        dir={dir}
-        className="input-luxury"
-      />
-    </div>
-  );
+  return <DashField label={label} value={value} onChange={onChange} dir={dir} type={type} autoComplete={autoComplete} />;
 }
 
 function TextArea({
@@ -999,7 +624,7 @@ function TextArea({
         value={value}
         onChange={(e) => onChange(e.target.value)}
         rows={rows}
-        className="input-luxury resize-y min-h-[88px]"
+        className="dash-input resize-y min-h-[88px]"
       />
     </div>
   );

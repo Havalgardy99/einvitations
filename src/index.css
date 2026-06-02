@@ -29,6 +29,46 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+.min-h-dvh {
+  min-height: 100dvh;
+}
+
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(34, 197, 94, 0.35) transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(34, 197, 94, 0.35);
+  border-radius: 4px;
+}
+
+@media (max-width: 639px) {
+  .marketplace-blob-1 {
+    width: 220px;
+    height: 220px;
+  }
+
+  .marketplace-blob-2 {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (min-width: 640px) {
+  @media (max-width: 1023px) {
+    .pricing-highlight {
+      transform: none !important;
+    }
+  }
 }
 
 .font-serif {
@@ -252,6 +292,159 @@ select.market-input {
   font-weight: 600;
 }
 
+/* ——— Admin dashboard (light) ——— */
+.dashboard-root {
+  min-height: 100vh;
+  background: #f4f6f8;
+  color: #1a1d1f;
+}
+
+.dash-sidebar {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  border: 1px solid #eef1f4;
+}
+
+.dash-card {
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #eef1f4;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.dash-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  color: #6b7280;
+  transition: all 0.15s;
+  text-align: right;
+}
+
+.dash-nav-item:hover {
+  background: #f4f6f8;
+  color: #1a1d1f;
+}
+
+.dash-nav-active {
+  background: #22c55e !important;
+  color: #ffffff !important;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+}
+
+.dash-fab {
+  background: #22c55e;
+  color: white;
+  border-radius: 14px;
+  padding: 0.75rem;
+  box-shadow: 0 4px 16px rgba(34, 197, 94, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.dash-fab:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(34, 197, 94, 0.45);
+}
+
+.btn-dash-primary {
+  background: #22c55e;
+  color: #fff;
+  transition: filter 0.15s, transform 0.15s;
+}
+
+.btn-dash-primary:hover:not(:disabled) {
+  filter: brightness(1.05);
+  transform: translateY(-1px);
+}
+
+.btn-dash-outline {
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  color: #374151;
+  transition: all 0.15s;
+}
+
+.btn-dash-outline:hover {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.dash-input {
+  width: 100%;
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  color: #1a1d1f;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.dash-input:focus {
+  outline: none;
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.12);
+  background: #fff;
+}
+
+.dash-stat {
+  background: #fff;
+  border-radius: 16px;
+  border: 1px solid #eef1f4;
+  padding: 1.25rem;
+}
+
+.dash-stat-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 10px;
+  background: #f0fdf4;
+  color: #22c55e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dash-highlight {
+  background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+  border-radius: 20px;
+  color: white;
+}
+
+.dash-mini-chart {
+  height: 80px;
+  background: linear-gradient(180deg, rgba(34, 197, 94, 0.15) 0%, transparent 100%);
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+}
+
+.dash-mini-chart::after {
+  content: "";
+  position: absolute;
+  bottom: 20%;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background: #22c55e;
+  border-radius: 2px;
+  box-shadow: 0 -20px 0 0 rgba(34, 197, 94, 0.3), 0 -40px 0 0 rgba(34, 197, 94, 0.15);
+}
+
+select.dash-input {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2322c55e' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: left 1rem center;
+  padding-left: 2.5rem;
+}
+
 /* ——— Admin luxury theme (dark) ——— */
 .admin-root {
   min-height: 100vh;
@@ -446,7 +639,7 @@ select.input-luxury {
     opacity: 0.7;
   }
   100% {
-    transform: translateY(820px) translateX(45px) rotate(380deg);
+    transform: translateY(100dvh) translateX(45px) rotate(380deg);
     opacity: 0;
   }
 }

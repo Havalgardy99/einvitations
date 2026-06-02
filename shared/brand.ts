@@ -1,6 +1,6 @@
 export const brand = {
-  nameEn: "Haawirabet",
-  nameKu: "هاورێبێت",
+  nameEn: "Hawre",
+  nameKu: "هاورێ",
   tagline: "بانگهێشتنامەی دیجیتاڵی هاوسەرگیری",
   taglineEn: "Digital Wedding Invitations"
 } as const;

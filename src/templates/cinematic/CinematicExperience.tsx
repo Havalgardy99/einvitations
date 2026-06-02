@@ -71,7 +71,10 @@ export default function CinematicExperience({ config, slug }: TemplateExperience
 
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-black/40 pointer-events-none" />
 
-            <div className="absolute top-0 left-0 right-0 p-4 flex justify-between items-start z-20">
+            <div
+              className="absolute top-0 left-0 right-0 p-4 flex justify-between items-start z-20"
+              style={{ paddingTop: "max(1rem, env(safe-area-inset-top))" }}
+            >
               <button
                 type="button"
                 onClick={goToContent}
@@ -82,7 +85,10 @@ export default function CinematicExperience({ config, slug }: TemplateExperience
               </button>
             </div>
 
-            <div className="absolute bottom-0 left-0 right-0 p-6 pb-10 text-center z-20 pointer-events-none">
+            <div
+              className="absolute bottom-0 left-0 right-0 p-4 sm:p-6 text-center z-20 pointer-events-none"
+              style={{ paddingBottom: "max(2.5rem, env(safe-area-inset-bottom))" }}
+            >
               <p className="text-[10px] tracking-[0.25em] text-white/70 uppercase font-mono mb-2">
                 Cinematic Invitation
               </p>
